@@ -12,6 +12,7 @@ impl<T> Visited<T>
 where
     T: Zero + One + Clone + PartialOrd + UpperBounded + AddAssign,
 {
+    #[inline(always)]
     /// Creates new zeroed visited struct with given capacity.
     pub fn zero(capacity: usize) -> Self {
         Self {
@@ -20,6 +21,7 @@ where
         }
     }
 
+    #[inline(always)]
     /// Returns whether the value at given index was already visited.
     pub fn is_visited<U>(&self, index: U) -> bool
     where
@@ -28,6 +30,7 @@ where
         self.visited[index.as_()] == self.visited_flag
     }
 
+    #[inline(always)]
     /// Sets the value at provided index as visited.
     pub fn set_visited<U>(&mut self, index: U)
     where
@@ -36,6 +39,7 @@ where
         self.visited[index.as_()] = self.visited_flag.clone();
     }
 
+    #[inline(always)]
     /// Sets the value at provided index as visited and returns the previous value.
     pub fn set_and_get_visited<U>(&mut self, index: U) -> bool
     where
@@ -47,6 +51,7 @@ where
         original == self.visited_flag
     }
 
+    #[inline(always)]
     /// Sets data-racingly the value at provided index as visited.
     ///
     /// # Safety
@@ -61,7 +66,8 @@ where
     {
         (&mut *(self.visited.as_ptr() as *mut Vec<T>))[index.as_()] = self.visited_flag.clone();
     }
-
+    
+    #[inline(always)]
     /// Sets data-racingly the value at provided index as visited  and returns the previous value.
     ///
     /// # Safety
@@ -80,6 +86,7 @@ where
         original == self.visited_flag
     }
 
+    #[inline(always)]
     /// Clears all visited values.
     ///
     /// # Implementative details
