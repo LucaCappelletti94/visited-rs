@@ -51,8 +51,28 @@ Then, in your BFS-like loop, you will want something like:
 let previous_state = visited.set_and_get_visited(node);
 ```
 
+Or you can do them separately as such:
+
+```rust
+let previous_state = visited.is_visited(node);
+visited.set_visited(node);
+```
+
+Finally, sometimes it make sense to write code in a [data-race aware](https://en.wikipedia.org/wiki/Race_condition) manner.
+For those special occasion where you really want to break the mutability system, I have prepared the following [`unsafe`](https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html) methods:
+
+```rust
+unsafe{visited.set_visited_racing(node);}
+unsafe{let previous_state = visited.set_and_get_visited_racing(node);}
+```
+
+Use them wisely.
+
 And finally, when you want to clear the object for the next round of BFS, you can simply use:
 
 ```rust
 visited.clear();
 ```
+
+## Helping
+You can help out by [opening an issue](https://github.com/LucaCappelletti94/visited-rs/issues) or a [pull request](https://github.com/LucaCappelletti94/visited-rs/pulls). If you like, you can also [directly support my work on GitHub](https://github.com/sponsors/LucaCappelletti94).
