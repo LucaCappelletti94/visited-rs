@@ -45,10 +45,8 @@ where
     where
         U: AsPrimitive<usize>,
     {
-        let value = &mut self.visited[index.as_()];
-        let original = value.clone();
-        *value = self.visited_flag.clone();
-        original == self.visited_flag
+        std::mem::replace(&mut self.visited[index.as_()], self.visited_flag.clone())
+            == self.visited_flag
     }
 
     #[inline(always)]
@@ -66,7 +64,7 @@ where
     {
         (&mut *(self.visited.as_ptr() as *mut Vec<T>))[index.as_()] = self.visited_flag.clone();
     }
-    
+
     #[inline(always)]
     /// Sets data-racingly the value at provided index as visited  and returns the previous value.
     ///
@@ -80,10 +78,10 @@ where
     where
         U: AsPrimitive<usize>,
     {
-        let value = &mut (&mut *(self.visited.as_ptr() as *mut Vec<T>))[index.as_()];
-        let original = value.clone();
-        *value = self.visited_flag.clone();
-        original == self.visited_flag
+        std::mem::replace(
+            &mut (&mut *(self.visited.as_ptr() as *mut Vec<T>))[index.as_()],
+            self.visited_flag.clone(),
+        ) == self.visited_flag
     }
 
     #[inline(always)]
